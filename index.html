@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gerasimos Altiparmak</title>
+  <script>
+    // Apply saved theme immediately to prevent flash of unstyled theme
+    (function () {
+      try {
+        var saved = localStorage.getItem('ga-theme');
+        if (saved === 'dark' || saved === 'light') {
+          document.documentElement.setAttribute('data-theme', saved);
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <style>
+    :root {
+      --bg: #FFFFFF;
+      --surface: #FAF9F6;
+      --border: #E5E3DD;
+      --border-strong: #1A1A1A;
+      --text-primary: #1A1A1A;
+      --text-secondary: #4A4A4A;
+      --text-muted: #767676;
+      --accent: #1A1A1A;
+      --btn-hover-bg: #1A1A1A;
+      --btn-hover-text: #FFFFFF;
+      --card-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+      --font-serif: 'Times New Roman', Times, Georgia, serif;
+      --max-width: 840px;
+    }
+
+    html[data-theme="dark"] {
+      --bg: #121211;
+      --surface: #1A1A18;
+      --border: #2E2D2A;
+      --border-strong: #EAE8E3;
+      --text-primary: #EAE8E3;
+      --text-secondary: #B8B5AD;
+      --text-muted: #8A8780;
+      --accent: #EAE8E3;
+      --btn-hover-bg: #EAE8E3;
+      --btn-hover-text: #121211;
+      --card-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      background-color: var(--bg);
+      color: var(--text-primary);
+      font-family: var(--font-serif);
+      font-size: 17px;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      transition: background-color 0.25s ease, color 0.25s ease;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background-color: var(--bg);
+      color: var(--text-primary);
+      position: relative;
+      overflow-x: hidden;
+      transition: background-color 0.25s ease, color 0.25s ease;
+    }
+
+    /* Main Container */
+    .site-wrapper {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 28px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top Bar & Navigation — Anchored Single Row on Desktop */
+    .site-header {
+      padding: 36px 0 24px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: nowrap;
+    }
+
+    .brand {
+      font-size: 1.05rem;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      color: var(--text-primary);
+      text-decoration: none;
+      white-space: nowrap;
+      flex-shrink: 0;
+      line-height: 1.2;
+      transition: font-size 0.2s ease, letter-spacing 0.2s ease;
+    }
+
+    .nav-cluster {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: nowrap;
+      flex-shrink: 0;
+    }
+
+    .top-nav {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: nowrap;
+    }
+
+    .nav-link {
+      position: relative;
+      background: none;
+      border: none;
+      outline: none;
+      font-family: var(--font-serif);
+      font-size: 0.98rem;
+      line-height: 1.2;
+      color: var(--text-secondary);
+      text-decoration: none;
+      cursor: pointer;
+      padding: 4px 0 6px;
+      white-space: nowrap;
+      transition: color 0.2s ease, font-size 0.2s ease;
+    }
+
+    /* Balanced Greek Header Proportions */
+    html[lang="el"] .brand {
+      font-size: 0.94rem;
+      letter-spacing: 0.03em;
+    }
+
+    html[lang="el"] .nav-cluster {
+      gap: 18px;
+    }
+
+    html[lang="el"] .top-nav {
+      gap: 18px;
+    }
+
+    html[lang="el"] .nav-link {
+      font-size: 0.87rem;
+    }
+
+    .nav-link:hover,
+    .nav-link:focus-visible,
+    .nav-link.active {
+      color: var(--text-primary);
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      bottom: 0;
+      transform: translateX(-50%);
+      height: 1.25px;
+      width: 0%;
+      background-color: var(--text-muted);
+      pointer-events: none;
+      transition: width 0.24s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.2s ease;
+    }
+
+    .nav-link:hover::after,
+    .nav-link:focus-visible::after {
+      width: 40%;
+      background-color: var(--text-muted);
+    }
+
+    .nav-link.active::after {
+      width: 100%;
+      background-color: var(--text-primary);
+    }
+
+    /* Utilities: Theme Toggle + Language Flags */
+    .header-utilities {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding-left: 14px;
+      border-left: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    #theme-toggle {
+      appearance: none;
+      -webkit-appearance: none;
+      background: transparent;
+      border: none;
+      outline: none;
+      box-shadow: none;
+      -webkit-tap-highlight-color: transparent;
+      color: var(--text-secondary);
+      cursor: pointer;
+      width: 24px;
+      height: 24px;
+      padding: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.2s ease, transform 0.2s ease;
+    }
+
+    #theme-toggle:hover,
+    #theme-toggle:focus,
+    #theme-toggle:focus-visible,
+    #theme-toggle:active {
+      border: none;
+      outline: none;
+      box-shadow: none;
+      background: transparent;
+      color: var(--text-primary);
+    }
+
+    #theme-toggle svg {
+      width: 15px;
+      height: 15px;
+      display: block;
+    }
+
+    #theme-toggle .icon-sun {
+      display: none !important;
+    }
+
+    #theme-toggle .icon-moon {
+      display: block !important;
+    }
+
+    html[data-theme="dark"] #theme-toggle .icon-sun {
+      display: block !important;
+    }
+
+    html[data-theme="dark"] #theme-toggle .icon-moon {
+      display: none !important;
+    }
+
+    .lang-switcher {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+    }
+
+    .lang-btn {
+      position: relative;
+      appearance: none;
+      -webkit-appearance: none;
+      background: transparent;
+      border: none;
+      outline: none;
+      box-shadow: none;
+      -webkit-tap-highlight-color: transparent;
+      cursor: pointer;
+      padding: 2px 0 6px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0.78;
+      transition: opacity 0.2s ease;
+    }
+
+    .lang-btn:hover,
+    .lang-btn:focus-visible,
+    .lang-btn.active {
+      opacity: 1;
+    }
+
+    .lang-btn::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      bottom: 0;
+      transform: translateX(-50%);
+      height: 1px;
+      width: 0%;
+      background-color: var(--text-muted);
+      pointer-events: none;
+      transition: width 0.24s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.2s ease;
+    }
+
+    .lang-btn:hover::after,
+    .lang-btn:focus-visible::after {
+      width: 40%;
+      background-color: var(--text-muted);
+    }
+
+    .lang-btn.active::after {
+      width: 100%;
+      background-color: var(--text-primary);
+    }
+
+    .flag-svg {
+      width: 21px;
+      height: 13px;
+      display: block;
+      border: 1px solid rgba(128, 128, 128, 0.28);
+    }
+
+    /* Main Sections */
+    main {
+      flex: 1;
+      padding: 46px 0 60px;
+    }
+
+    .page-section {
+      display: none;
+      animation: fadeIn 0.22s ease;
+    }
+
+    .page-section.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(3px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .section-heading {
+      font-size: 1.45rem;
+      font-weight: 400;
+      letter-spacing: 0.01em;
+      color: var(--text-primary);
+      margin-bottom: 24px;
+    }
+
+    /* Home Section */
+    .home-content {
+      max-width: 680px;
+    }
+
+    .home-about-heading {
+      font-size: 1.05rem;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-primary);
+      margin-bottom: 18px;
+    }
+
+    .home-bio,
+    .home-bio-secondary {
+      font-size: clamp(0.95rem, 1.3vw, 1.01rem);
+      line-height: 1.72;
+      color: var(--text-primary);
+      margin-bottom: 16px;
+    }
+
+    .home-bio-secondary {
+      margin-bottom: 0;
+    }
+
+    /* CV Section */
+    .cv-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .cv-header .section-heading {
+      margin-bottom: 0;
+    }
+
+    .cv-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 0.92rem;
+    }
+
+    .cv-link {
+      color: var(--text-secondary);
+      text-decoration: none;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 2px;
+      transition: color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .cv-link:hover {
+      color: var(--text-primary);
+      border-color: var(--text-primary);
+    }
+
+    .cv-frame-wrap {
+      width: 100%;
+      border: 1px solid var(--border);
+      background-color: var(--surface);
+      box-shadow: var(--card-shadow);
+      overflow: hidden;
+    }
+
+    .cv-embed {
+      width: 100%;
+      height: 78vh;
+      min-height: 540px;
+      border: none;
+      display: block;
+      background-color: #FFFFFF;
+    }
+
+    .cv-fallback {
+      padding: 36px 24px;
+      text-align: center;
+      color: var(--text-secondary);
+      font-size: 0.98rem;
+    }
+
+    .cv-fallback a {
+      color: var(--text-primary);
+    }
+
+    /* Photos Section */
+    .photos-construction {
+      padding: 64px 0;
+      text-align: center;
+      font-size: 1.05rem;
+      color: var(--text-secondary);
+    }
+
+    /* Contact Section */
+    .contact-cards {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-bottom: 34px;
+    }
+
+    .contact-card {
+      background-color: var(--surface);
+      border: 1px solid var(--border);
+      padding: 18px 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 10px;
+      transition: border-color 0.2s ease;
+    }
+
+    .contact-card:hover {
+      border-color: var(--border-strong);
+    }
+
+    .contact-card-link {
+      text-decoration: none;
+      color: inherit;
+      cursor: pointer;
+    }
+
+    .contact-card-link:hover .card-link-text {
+      border-bottom-color: var(--text-primary);
+    }
+
+    .card-kicker {
+      font-size: 0.85rem;
+      letter-spacing: 0.03em;
+      color: var(--text-muted);
+    }
+
+    .card-value-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .card-link,
+    .card-link-text {
+      color: var(--text-primary);
+      text-decoration: none;
+      font-size: 0.98rem;
+      word-break: break-all;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.2s ease;
+    }
+
+    .card-link:hover {
+      border-bottom-color: var(--text-primary);
+    }
+
+    .copy-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      font-family: var(--font-serif);
+      font-size: 0.78rem;
+      padding: 3px 8px;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: all 0.2s ease;
+    }
+
+    .copy-btn:hover {
+      border-color: var(--border-strong);
+      color: var(--text-primary);
+    }
+
+    /* Correspondence Message Box with 20 Lepta Hermes Stamp */
+    .message-box {
+      position: relative;
+      background-color: var(--surface);
+      border: 1px solid var(--border);
+      padding: 28px 30px 26px;
+      box-shadow: var(--card-shadow);
+    }
+
+    .correspondence-stamp {
+      position: absolute;
+      top: 22px;
+      right: 24px;
+      width: 60px;
+      height: auto;
+      display: block;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .message-top-fields {
+      padding-right: 84px;
+    }
+
+    .field-group {
+      margin-bottom: 18px;
+    }
+
+    .field-label {
+      display: block;
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      margin-bottom: 5px;
+    }
+
+    .field-input,
+    .field-textarea {
+      width: 100%;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      font-family: var(--font-serif);
+      font-size: 0.98rem;
+      color: var(--text-primary);
+      padding: 6px 0;
+      outline: none;
+      transition: border-color 0.2s ease;
+    }
+
+    .field-input:focus,
+    .field-textarea:focus {
+      border-bottom-color: var(--border-strong);
+    }
+
+    .field-textarea {
+      min-height: 92px;
+      resize: vertical;
+      line-height: 1.55;
+    }
+
+    .message-actions {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 8px;
+    }
+
+    .submit-btn {
+      background: transparent;
+      border: 1px solid var(--border-strong);
+      color: var(--text-primary);
+      font-family: var(--font-serif);
+      font-size: 0.94rem;
+      padding: 8px 20px;
+      cursor: pointer;
+      transition: background-color 0.2s ease, color 0.2s ease;
+    }
+
+    .submit-btn:hover {
+      background-color: var(--btn-hover-bg);
+      color: var(--btn-hover-text);
+    }
+
+    /* Footer */
+    .site-footer {
+      border-top: 1px solid var(--border);
+      padding: 20px 0 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+
+    /* Responsive Mobile Adjustments */
+    @media (max-width: 720px) {
+      .site-wrapper {
+        padding: 0 20px;
+      }
+
+      .site-header {
+        padding: 26px 0 18px;
+        flex-wrap: wrap;
+        gap: 14px;
+      }
+
+      .nav-cluster {
+        width: 100%;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 14px;
+      }
+
+      .top-nav {
+        gap: 16px;
+      }
+
+      html[lang="el"] .nav-cluster {
+        gap: 12px;
+      }
+
+      html[lang="el"] .top-nav {
+        gap: 13px;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .contact-cards {
+        grid-template-columns: 1fr;
+      }
+
+      .message-box {
+        padding: 22px 20px;
+      }
+
+      .correspondence-stamp {
+        top: 18px;
+        right: 18px;
+        width: 54px;
+      }
+
+      .message-top-fields {
+        padding-right: 74px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="site-wrapper">
+    <!-- Top Bar -->
+    <header class="site-header">
+      <a href="#home" class="brand" data-target="home" data-i18n="brandName">Gerasimos Altiparmak</a>
+
+      <div class="nav-cluster">
+        <nav class="top-nav" aria-label="Primary Navigation">
+          <button type="button" class="nav-link active" data-target="home" data-i18n="navHome">Home</button>
+          <button type="button" class="nav-link" data-target="cv" data-i18n="navCv">CV</button>
+          <button type="button" class="nav-link" data-target="photos" data-i18n="navPhotos">Photos</button>
+          <button type="button" class="nav-link" data-target="contact" data-i18n="navContact">Contact</button>
+        </nav>
+
+        <div class="header-utilities">
+          <button type="button" id="theme-toggle" aria-label="Toggle color theme" title="Toggle color theme">
+            <!-- Moon Icon (Shown in Light Mode) -->
+            <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+            <!-- Sun Icon (Shown in Dark Mode) -->
+            <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="4.5"></circle>
+              <line x1="12" y1="2" x2="12" y2="4.5"></line>
+              <line x1="12" y1="19.5" x2="12" y2="22"></line>
+              <line x1="4.93" y1="4.93" x2="6.7" y2="6.7"></line>
+              <line x1="17.3" y1="17.3" x2="19.07" y2="19.07"></line>
+              <line x1="2" y1="12" x2="4.5" y2="12"></line>
+              <line x1="19.5" y1="12" x2="22" y2="12"></line>
+              <line x1="4.93" y1="19.07" x2="6.7" y2="17.3"></line>
+              <line x1="17.3" y1="6.7" x2="19.07" y2="4.93"></line>
+            </svg>
+          </button>
+
+          <div class="lang-switcher" role="group" aria-label="Language selector">
+            <!-- US Flag (English) -->
+            <button type="button" class="lang-btn active" data-lang="en" aria-label="English" title="English">
+              <svg class="flag-svg" viewBox="0 0 7410 3900" aria-hidden="true">
+                <rect width="7410" height="3900" fill="#b22234"/>
+                <path d="M0,450H7410m0,600H0m0,600H7410m0,600H0m0,600H7410m0,600H0" stroke="#fff" stroke-width="300"/>
+                <rect width="2964" height="2100" fill="#3c3b6e"/>
+                <g fill="#fff">
+                  <g id="s18">
+                    <g id="s9">
+                      <g id="s5">
+                        <g id="s4">
+                          <path id="s" d="M247,90 317.534230,307.082039 132.873218,172.917961H361.126782L176.465770,307.082039z"/>
+                          <use href="#s" y="420"/>
+                          <use href="#s" y="840"/>
+                          <use href="#s" y="1260"/>
+                        </g>
+                        <use href="#s" y="1680"/>
+                      </g>
+                      <use href="#s4" x="247" y="210"/>
+                    </g>
+                    <use href="#s9" x="494"/>
+                  </g>
+                  <use href="#s18" x="988"/>
+                  <use href="#s9" x="1976"/>
+                  <use href="#s5" x="2470"/>
+                </g>
+              </svg>
+            </button>
+
+            <!-- Greek Flag (Ελληνικά) -->
+            <button type="button" class="lang-btn" data-lang="el" aria-label="Ελληνικά" title="Ελληνικά">
+              <svg class="flag-svg" viewBox="0 0 27 18" aria-hidden="true">
+                <rect width="27" height="18" fill="#0D5EAF"/>
+                <path d="M0,3H27M0,7H27M0,11H27M0,15H27" stroke="#FFFFFF" stroke-width="2"/>
+                <rect width="10" height="10" fill="#0D5EAF"/>
+                <path d="M5,0V10M0,5H10" stroke="#FFFFFF" stroke-width="2"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+      <!-- Home -->
+      <section id="home" class="page-section active">
+        <div class="home-content">
+          <h1 class="home-about-heading" data-i18n="aboutHeading">ABOUT</h1>
+          <p class="home-bio" data-i18n="bioP1">
+            Applied Mathematical and Physical Sciences student at the National Technical University of Athens, currently enrolled in his second year of studies. Minoring in Psychology at the American College of Greece
+          </p>
+          <p class="home-bio-secondary" data-i18n="bioP2">
+            Struggling to become a "Homo Universalis".
+          </p>
+        </div>
+      </section>
+
+      <!-- CV -->
+      <section id="cv" class="page-section">
+        <div class="cv-header">
+          <h1 class="section-heading" data-i18n="cvHeading">Curriculum Vitae</h1>
+          <div class="cv-actions">
+            <a href="gerasimosaltiparmakCV.pdf" target="_blank" rel="noopener noreferrer" class="cv-link" data-i18n="cvOpen">Open PDF</a>
+            <a href="gerasimosaltiparmakCV.pdf" download class="cv-link" data-i18n="cvDownload">Download</a>
+          </div>
+        </div>
+
+        <div class="cv-frame-wrap">
+          <object data="gerasimosaltiparmakCV.pdf#view=FitH" type="application/pdf" class="cv-embed">
+            <iframe src="gerasimosaltiparmakCV.pdf#view=FitH" class="cv-embed" title="Gerasimos Altiparmak CV"></iframe>
+            <div class="cv-fallback">
+              <p>
+                <span data-i18n="cvFallbackText">Unable to display PDF inline.</span>
+                <a href="gerasimosaltiparmakCV.pdf" target="_blank" rel="noopener noreferrer" data-i18n="cvOpen">Open PDF</a>
+              </p>
+            </div>
+          </object>
+        </div>
+      </section>
+
+      <!-- Photos -->
+      <section id="photos" class="page-section">
+        <p class="photos-construction">page under construction :(</p>
+      </section>
+
+      <!-- Contact -->
+      <section id="contact" class="page-section">
+        <h1 class="section-heading" data-i18n="contactHeading">Contact</h1>
+
+        <div class="contact-cards">
+          <div class="contact-card">
+            <span class="card-kicker">Email</span>
+            <div class="card-value-row">
+              <a href="mailto:altipager@gmail.com" class="card-link">altipager@gmail.com</a>
+              <button type="button" class="copy-btn" data-email="altipager@gmail.com" data-i18n="copyBtn">Copy</button>
+            </div>
+          </div>
+
+          <a href="https://www.linkedin.com/in/gerasimos-altiparmak-87647243a/" target="_blank" rel="noopener noreferrer" class="contact-card contact-card-link">
+            <span class="card-kicker">LinkedIn</span>
+            <div class="card-value-row">
+              <span class="card-link-text">Gerasimos Altiparmak</span>
+            </div>
+          </a>
+        </div>
+
+        <div class="message-box">
+          <img
+            class="correspondence-stamp"
+            src="Tirage_de_Paris_-_20_Lepta.png"
+            alt="20 Lepta Hermes postage stamp"
+            onerror="this.onerror=null;this.src='data:image/svg+xml;charset=utf-8,' + encodeURIComponent('<svg xmlns=&quot;http://www.w3.org/2000/svg&quot; viewBox=&quot;0 0 120 144&quot;><rect width=&quot;120&quot; height=&quot;144&quot; fill=&quot;#F3F1E8&quot;/><rect x=&quot;5&quot; y=&quot;5&quot; width=&quot;110&quot; height=&quot;134&quot; fill=&quot;none&quot; stroke=&quot;#15549A&quot; stroke-width=&quot;2.5&quot;/><rect x=&quot;9&quot; y=&quot;9&quot; width=&quot;102&quot; height=&quot;16&quot; fill=&quot;#15549A&quot;/><text x=&quot;60&quot; y=&quot;20&quot; text-anchor=&quot;middle&quot; font-family=&quot;Times New Roman, serif&quot; font-size=&quot;10&quot; letter-spacing=&quot;1&quot; fill=&quot;#F3F1E8&quot;>ΕΛΛ. ΓΡΑΜΜ.</text><circle cx=&quot;60&quot; cy=&quot;73&quot; r=&quot;42&quot; fill=&quot;#15549A&quot;/><circle cx=&quot;60&quot; cy=&quot;73&quot; r=&quot;37&quot; fill=&quot;none&quot; stroke=&quot;#F3F1E8&quot; stroke-width=&quot;2&quot; stroke-dasharray=&quot;2 3.2&quot;/><path d=&quot;M46,56 C58,48 73,53 76,66 C78,76 74,88 64,95 L50,95 C52,86 48,79 45,73 C42,67 43,60 46,56 Z&quot; fill=&quot;#F3F1E8&quot;/><path d=&quot;M41,54 L66,46 L61,56 L42,60 Z&quot; fill=&quot;#F3F1E8&quot;/><rect x=&quot;9&quot; y=&quot;121&quot; width=&quot;102&quot; height=&quot;15&quot; fill=&quot;#15549A&quot;/><text x=&quot;60&quot; y=&quot;132&quot; text-anchor=&quot;middle&quot; font-family=&quot;Times New Roman, serif&quot; font-size=&quot;10&quot; letter-spacing=&quot;1&quot; fill=&quot;#F3F1E8&quot;>20 ΛΕΠΤ. 20</text></svg>');"
+          />
+
+          <form id="message-form">
+            <div class="message-top-fields">
+              <div class="field-group">
+                <label class="field-label" for="message-name" data-i18n="msgNameLabel">Full Name</label>
+                <input type="text" id="message-name" class="field-input" autocomplete="name" />
+              </div>
+
+              <div class="field-group">
+                <label class="field-label" for="message-subject" data-i18n="msgSubjectLabel">Subject</label>
+                <input type="text" id="message-subject" class="field-input" />
+              </div>
+            </div>
+
+            <div class="field-group">
+              <label class="field-label" for="message-body" data-i18n="msgBodyLabel">Message</label>
+              <textarea id="message-body" class="field-textarea"></textarea>
+            </div>
+
+            <div class="message-actions">
+              <button type="submit" class="submit-btn" data-i18n="sendMessage">Send Message</button>
+            </div>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+      <span>Memento mori. Memento vivere.</span>
+      <span data-i18n="lastUpdated">Last updated: November 2026</span>
+    </footer>
+  </div>
+
+  <script>
+    (function () {
+      var I18N = {
+        en: {
+          brandName: 'Gerasimos Altiparmak',
+          navHome: 'Home',
+          navCv: 'CV',
+          navPhotos: 'Photos',
+          navContact: 'Contact',
+          aboutHeading: 'ABOUT',
+          bioP1: 'Applied Mathematical and Physical Sciences student at the National Technical University of Athens, currently enrolled in his second year of studies. Minoring in Psychology at the American College of Greece',
+          bioP2: 'Struggling to become a "Homo Universalis".',
+          cvHeading: 'Curriculum Vitae',
+          cvOpen: 'Open PDF',
+          cvDownload: 'Download',
+          cvFallbackText: 'Unable to display PDF inline.',
+          contactHeading: 'Contact',
+          copyBtn: 'Copy',
+          copiedBtn: 'Copied',
+          msgNameLabel: 'Full Name',
+          msgSubjectLabel: 'Subject',
+          msgBodyLabel: 'Message',
+          sendMessage: 'Send Message',
+          lastUpdated: 'Last updated: November 2026'
+        },
+        el: {
+          brandName: 'ΓΕΡΑΣΙΜΟΣ ΑΛΤΙΠΑΡΜΑΚ',
+          navHome: 'Αρχική',
+          navCv: 'Βιογραφικό',
+          navPhotos: 'Φωτογραφίες',
+          navContact: 'Επικοινωνία',
+          aboutHeading: 'ΣΧΕΤΙΚΑ',
+          bioP1: 'Φοιτητής Εφαρμοσμένων Μαθηματικών και Φυσικών Επιστημών στο Εθνικό Μετσόβιο Πολυτεχνείο, διανύοντας το δεύτερο έτος των σπουδών του. Με παράλληλες σπουδές στην Ψυχολογία στο Αμερικανικό Κολλέγιο Ελλάδος',
+          bioP2: 'Πασχίζει να γίνει ένας «Homo Universalis».',
+          cvHeading: 'Βιογραφικό Σημείωμα',
+          cvOpen: 'Άνοιγμα PDF',
+          cvDownload: 'Λήψη',
+          cvFallbackText: 'Δεν είναι δυνατή η προβολή του PDF στη σελίδα.',
+          contactHeading: 'Επικοινωνία',
+          copyBtn: 'Αντιγραφή',
+          copiedBtn: 'Αντιγράφηκε',
+          msgNameLabel: 'Ονοματεπώνυμο',
+          msgSubjectLabel: 'Θέμα',
+          msgBodyLabel: 'Μήνυμα',
+          sendMessage: 'Αποστολή Μηνύματος',
+          lastUpdated: 'Τελευταία ενημέρωση: Νοέμβριος 2026'
+        }
+      };
+
+      var currentLang = 'en';
+
+      // Theme Switching
+      var themeToggle = document.getElementById('theme-toggle');
+      function applyTheme(theme) {
+        if (theme === 'dark') {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        } else {
+          document.documentElement.removeAttribute('data-theme');
+        }
+        try {
+          localStorage.setItem('ga-theme', theme);
+        } catch (e) {}
+      }
+
+      if (themeToggle) {
+        themeToggle.addEventListener('click', function () {
+          var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+          applyTheme(isDark ? 'light' : 'dark');
+        });
+      }
+
+      // Navigation Switching
+      var navLinks = document.querySelectorAll('.nav-link');
+      var brandLink = document.querySelector('.brand');
+      var sections = document.querySelectorAll('.page-section');
+
+      function activateSection(targetId) {
+        sections.forEach(function (sec) {
+          sec.classList.toggle('active', sec.id === targetId);
+        });
+        navLinks.forEach(function (btn) {
+          btn.classList.toggle('active', btn.getAttribute('data-target') === targetId);
+        });
+      }
+
+      navLinks.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          activateSection(btn.getAttribute('data-target'));
+        });
+      });
+
+      if (brandLink) {
+        brandLink.addEventListener('click', function (e) {
+          e.preventDefault();
+          activateSection('home');
+        });
+      }
+
+      // Language Switching
+      var langBtns = document.querySelectorAll('.lang-btn');
+      function setLanguage(lang) {
+        if (!I18N[lang]) return;
+        currentLang = lang;
+        document.documentElement.lang = lang;
+
+        langBtns.forEach(function (btn) {
+          btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
+        });
+
+        var dict = I18N[lang];
+        document.querySelectorAll('[data-i18n]').forEach(function (el) {
+          var key = el.getAttribute('data-i18n');
+          if (dict[key] !== undefined) {
+            el.textContent = dict[key];
+          }
+        });
+      }
+
+      langBtns.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          setLanguage(btn.getAttribute('data-lang'));
+        });
+      });
+
+      // Copy Email with iFrame-safe execCommand fallback
+      var copyBtn = document.querySelector('.copy-btn');
+      if (copyBtn) {
+        copyBtn.addEventListener('click', function () {
+          var email = copyBtn.getAttribute('data-email') || 'altipager@gmail.com';
+          var tempInput = document.createElement('textarea');
+          tempInput.value = email;
+          tempInput.setAttribute('readonly', '');
+          tempInput.style.position = 'fixed';
+          tempInput.style.opacity = '0';
+          document.body.appendChild(tempInput);
+          tempInput.select();
+          try {
+            document.execCommand('copy');
+          } catch (err) {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+              navigator.clipboard.writeText(email).catch(function () {});
+            }
+          }
+          document.body.removeChild(tempInput);
+
+          copyBtn.textContent = I18N[currentLang].copiedBtn;
+          setTimeout(function () {
+            copyBtn.textContent = I18N[currentLang].copyBtn;
+          }, 1800);
+        });
+      }
+
+      // Correspondence Mailto Composer
+      var messageForm = document.getElementById('message-form');
+      if (messageForm) {
+        messageForm.addEventListener('submit', function (e) {
+          e.preventDefault();
+          var nameVal = (document.getElementById('message-name').value || '').trim();
+          var subjectVal = (document.getElementById('message-subject').value || '').trim();
+          var bodyVal = (document.getElementById('message-body').value || '').trim();
+
+          var parts = [];
+          if (nameVal) {
+            parts.push('Full Name: ' + nameVal);
+          }
+          if (bodyVal) {
+            parts.push(bodyVal);
+          }
+
+          var mailtoUrl = 'mailto:altipager@gmail.com'
+            + '?subject=' + encodeURIComponent(subjectVal || 'Correspondence')
+            + '&body=' + encodeURIComponent(parts.join('\n\n'));
+
+          window.location.href = mailtoUrl;
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
